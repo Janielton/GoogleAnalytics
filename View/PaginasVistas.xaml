@@ -1,0 +1,56 @@
+﻿<Page x:Class="GoogleAnalitics.View.PaginasVistas"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GoogleAnalitics.View" xmlns:i="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="800"
+      Title="PaginasVistas">
+
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Margin="5,0,10,0">
+            <TextBox x:Name="editDataInicial" Margin="5,0" TextAlignment="Center"
+                         Text="{Binding DataInicial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="DataInicial_GotFocus"/>
+            <TextBox x:Name="editDataFinal" Margin="5,0" TextAlignment="Center"
+                         Text="{Binding DataFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GotFocus="DataFinal_GotFocus"/>
+            <Button x:Name="btFiltrar" Content="Filtrar" Command="{Binding Filtrar}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="8,0" Background="White">
+            <Button Content="Todos" VerticalAlignment="Center" Margin="12,0,3,0" FontSize="14" Background="Gray" Command="{Binding Todos}"/>
+            <TextBlock Height="15" Width="2" Background="Black"/>
+            <Button Content="Cidade" VerticalAlignment="Center" Margin="3,0" FontSize="14" Background="Gray" Command="{Binding Cidade}"/>
+            <TextBlock Height="15" Width="2" Background="Black"/>
+            <Button Content="Simulado" VerticalAlignment="Center" Margin="3,0" FontSize="14" Background="Gray" Cursor="Hand" Command="{Binding Simulado}"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="1" Margin="8,0" Background="White" Visibility="{Binding StackAcao}">
+            <Button Content="Abrir" Command="{Binding Abrir}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="14" Background="#FF87C521"/>
+            <TextBlock Height="15" Width="2" Background="Black" Visibility="{Binding CidadeBT}" />
+            <Button Content="Pesquisar" Command="{Binding Pesquisar}" VerticalAlignment="Center" Margin="4,0" FontSize="14" Background="#FF5A66C3" Visibility="{Binding CidadeBT}" />
+            <TextBlock Height="15" Width="2" Background="Black" Visibility="{Binding CidadeBT}" />
+            <Button Visibility="{Binding CidadeBT}" Content="Site Prefeitura" Command="{Binding SitePrefeitura}" VerticalAlignment="Center" Margin="4,0" FontSize="14" Background="#FFF19332"/>
+        </StackPanel>
+        <ListView ItemsSource="{Binding listData}" Grid.Row="2" Margin="8" SelectedIndex="{Binding SelectedIndex}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                        <TextBlock MaxWidth="700" Text="{Binding dimension}" FontSize="14" TextWrapping="Wrap"/>
+                        <Border CornerRadius="8" Margin="5,0" Background="Blue" Height="20">
+                            <TextBlock Text="{Binding metric}" Foreground="White" Padding="10,2"/>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+       
+        <Border Visibility="{Binding IsVisibleLoading}" Background="White" CornerRadius="10" BorderBrush="Gainsboro" BorderThickness="2" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2">
+            <ProgressBar IsIndeterminate="True" Width="400" Foreground="#FF7C2ED8" Height="10" Background="Transparent" BorderThickness="0" x:Name="pLoading" />
+        </Border>
+        <Calendar HorizontalAlignment="Right" Grid.Row="1" Grid.RowSpan="2" x:Name="selectData" Visibility="Collapsed" SelectedDatesChanged="selectData_SelectedDatesChanged"></Calendar>
+    </Grid>
+</Page>
