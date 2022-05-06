@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GoogleAnalitics.Properties {
+namespace GoogleAnalytics.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -32,6 +32,18 @@ namespace GoogleAnalitics.Properties {
             }
             set {
                 this["pathJson"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string propriedade {
+            get {
+                return ((string)(this["propriedade"]));
+            }
+            set {
+                this["propriedade"] = value;
             }
         }
     }

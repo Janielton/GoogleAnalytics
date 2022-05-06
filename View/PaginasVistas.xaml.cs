@@ -1,4 +1,4 @@
-﻿using GoogleAnalitics.ViewModel;
+﻿using GoogleAnalytics.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GoogleAnalitics.View
+namespace GoogleAnalytics.View
 {
     /// <summary>
     /// Interação lógica para PaginasVistas.xam

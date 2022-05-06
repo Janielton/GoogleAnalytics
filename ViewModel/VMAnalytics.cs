@@ -1,5 +1,5 @@
-﻿using GoogleAnalitics.Classes;
-using GoogleAnalitics.Model;
+﻿using GoogleAnalytics.Classes;
+using GoogleAnalytics.Model;
 using Google.Analytics.Data.V1Beta;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -16,13 +16,15 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using config = GoogleAnalytics.Properties.Settings;
 
-namespace GoogleAnalitics.ViewModel
+namespace GoogleAnalytics.ViewModel
 {
     public class VMAnalytics : INotifyPropertyChanged
     {
        
-        string googleCredential = @"C:\Users\Elton\Downloads\confira-concursos-c47f81fdfc0a.json";
+        string googleCredential = config.Default.pathJson;
+        string googlePropriedade = config.Default.propriedade;
         AnalyticsService service;
 
         DateTime hoje = DateTime.Now;
@@ -31,15 +33,15 @@ namespace GoogleAnalitics.ViewModel
         List<AnaliticsData> listPizza = new List<AnaliticsData>();
 
         public ObservableCollection<AnaliticsData> _listData = new ObservableCollection<AnaliticsData>();
-        private bool StartVM = false;
+
 
         private int Tipo = 1;
         private int TipoFiltro = 1;
 
         public VMAnalytics()
         {
-            service = new AnalyticsService(googleCredential);
-            StartVM = true;
+          //  service = new AnalyticsService(googleCredential);
+     
         }
         public VMAnalytics(int tipo)
         {
@@ -69,7 +71,6 @@ namespace GoogleAnalitics.ViewModel
                 IsVisibleLoading = Visibility.Visible;
                 getVisitasPizza(new DateRange { StartDate = startDate.ToString("yyyy-MM-dd"), EndDate = hoje.ToString("yyyy-MM-dd") });
             }
-            StartVM = true;
 
         }
 
@@ -234,7 +235,7 @@ namespace GoogleAnalitics.ViewModel
         public ICommand Filtrar { get { return new DelegateCommand(_Filtrar); } }
         public ICommand Todos { get { return new DelegateCommand(_Todos); } }
         public ICommand Cidade { get { return new DelegateCommand(_Cidade); } }
-        public ICommand Simulado { get { return new DelegateCommand(_Simulado); } }
+        public ICommand Outro { get { return new DelegateCommand(_Outro); } }
         public ICommand Abrir { get { return new DelegateCommand(_Abrir); } }
         public ICommand Pesquisar { get { return new DelegateCommand(_Pesquisar); } }
         public ICommand SitePrefeitura { get { return new DelegateCommand(_SitePrefeitura); } }
@@ -287,10 +288,10 @@ namespace GoogleAnalitics.ViewModel
             TipoFiltro = 2;
         }
 
-        private void _Simulado()
+        private void _Outro()
         {
             if (TipoFiltro == 3) return;
-            getVisitasSimulado();
+            getVisitasOutro();
             TipoFiltro = 3;
         }
 
@@ -369,7 +370,7 @@ namespace GoogleAnalitics.ViewModel
         private async void getVisitasAll(DateRange data)
         {
             ResetSelect();
-            var list = await service.getPaginaVista("307227049", data, "all");
+            var list = await service.getPaginaVista(googlePropriedade, data);
             listAll = list;
             listData = new ObservableCollection<AnaliticsData>(list);
             IsVisibleLoading = Visibility.Collapsed;
@@ -378,16 +379,17 @@ namespace GoogleAnalitics.ViewModel
         private void getVisitasCidade()
         {
             ResetSelect();
-            //  var list = await service.getPaginaVista("307227049", data, "/cidade/");
-            var list = buscarInList(listAll, "/cidade/");
+            string filtro = "/cidade";
+            var list = buscarInList(listAll, filtro);
             listData = new ObservableCollection<AnaliticsData>(list);
             IsVisibleLoading = Visibility.Collapsed;
         }
 
-        private void getVisitasSimulado()
+        private void getVisitasOutro()
         {
             ResetSelect();
-            var list = buscarInList(listAll, "simulados-e-questoes");
+            string filtro = "/outro";
+            var list = buscarInList(listAll, filtro);
             listData = new ObservableCollection<AnaliticsData>(list);
             IsVisibleLoading = Visibility.Collapsed;
         }
@@ -407,7 +409,7 @@ namespace GoogleAnalitics.ViewModel
         private async void getVisitasGrafico(DateRange data)
         {
             var pnls = new List<Pnl>();
-            var list = await service.getVisitas("307227049", data);
+            var list = await service.getVisitas(googlePropriedade, data);
             DateTime dt;
             foreach (AnaliticsData item in list)
             {
@@ -487,7 +489,7 @@ namespace GoogleAnalitics.ViewModel
 
         private async void getVisitasPizza(DateRange data)
         {
-            var list = await service.getVisitasPizza("307227049", data); 
+            var list = await service.getVisitasPizza(googlePropriedade, data); 
             foreach (AnaliticsData item in list)
             {
                 Debug.WriteLine($"{item.dimension} - {item.metric}");

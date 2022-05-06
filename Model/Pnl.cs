@@ -3,7 +3,7 @@ using System.Diagnostics;
 using OxyPlot.Axes;
 
 
-namespace GoogleAnalitics.Model
+namespace GoogleAnalytics.Model
 {
     public class Pnl
     {

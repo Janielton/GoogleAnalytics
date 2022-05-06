@@ -1,4 +1,4 @@
-﻿using GoogleAnalitics.Model;
+﻿using GoogleAnalytics.Model;
 using Google.Analytics.Data.V1Beta;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace GoogleAnalitics.Classes
+namespace GoogleAnalytics.Classes
 {
     public class AnalyticsService
     {
@@ -23,8 +23,7 @@ namespace GoogleAnalitics.Classes
 
         public async Task<List<AnaliticsData>> getPaginaVista(
             string idPropriedade, 
-            DateRange data, 
-            string query
+            DateRange data
             ) {
             List<AnaliticsData> lista = new List<AnaliticsData>();
             try
@@ -43,13 +42,8 @@ namespace GoogleAnalitics.Classes
                 foreach (Row row in response.Rows)
                 {
                     string valor = row.DimensionValues[0].Value;
-                    if (query == "all" || valor.Contains(query))
-                    {
-                        lista.Add(new AnaliticsData { dimension= valor, metric = row.MetricValues[0].Value });
+                    lista.Add(new AnaliticsData { dimension = valor, metric = row.MetricValues[0].Value });
 
-                        Debug.WriteLine("{0}, {1}", valor, row.MetricValues[0].Value);
-                    }
-                 
                 }
             }
             catch (Exception ex)

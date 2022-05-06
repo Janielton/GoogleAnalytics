@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using System.IO;
-using config = GoogleAnalitics.Properties.Settings;
+using config = GoogleAnalytics.Properties.Settings;
 
-namespace GoogleAnalitics
+namespace GoogleAnalytics
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -16,7 +16,9 @@ namespace GoogleAnalitics
         public MainWindow()
         {
             InitializeComponent();
-            if (string.IsNullOrEmpty(config.Default.pathJson) || !File.Exists(config.Default.pathJson))
+            if (string.IsNullOrEmpty(config.Default.pathJson) 
+                || string.IsNullOrEmpty(config.Default.propriedade)
+                || !File.Exists(config.Default.pathJson))
             {
                 btTab.IsEnabled = false;
                 btTab2.IsEnabled = false;
@@ -28,6 +30,7 @@ namespace GoogleAnalitics
             tabAtual = btTab;
             tabAtual.IsEnabled = false;
             editPath.Text = config.Default.pathJson;
+            editPropriedade.Text = config.Default.propriedade;
         }
 
         private void btTab_Click(object sender, RoutedEventArgs e)
@@ -79,9 +82,13 @@ namespace GoogleAnalitics
             if (borderConfig.IsVisible)
             {
                 borderConfig.Visibility = Visibility.Collapsed;
-                if (string.IsNullOrEmpty(editPath.Text)) return;
+                if (string.IsNullOrEmpty(editPath.Text) || string.IsNullOrEmpty(editPropriedade.Text)) return;
+
                 if (File.Exists(config.Default.pathJson))
                 {
+                    config.Default.Upgrade();
+                    config.Default.propriedade = editPropriedade.Text;
+                    config.Default.Save();
                     btTab2.IsEnabled = true;
                     btTab3.IsEnabled = true;
                     pageContainer.Source = getPage("PaginasVistas");

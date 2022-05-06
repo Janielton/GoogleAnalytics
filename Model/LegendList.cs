@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GoogleAnalitics.Model
+﻿
+namespace GoogleAnalytics.Model
 {
     public class LegendList
     {
